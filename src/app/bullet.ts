@@ -1,13 +1,13 @@
 import { Graphics } from 'pixi.js';
-import { bullet } from './variables';
+import { Character } from './character';
 
 export class Bullet extends Graphics {
   public velocity = { x: 0, y: 0 };
   private speed = 10;
 
-  constructor(x: number, y: number, angle: number) {
+  constructor(x: number, y: number, angle: number, color: number) {
     super();
-    this.circle(0, 0, 8).fill({ color: bullet.color });
+    this.circle(0, 0, 8).fill({ color: color });
     this.x = x;
     this.y = y;
     this.velocity.x = Math.cos(angle) * this.speed;
@@ -26,10 +26,20 @@ export class Bullet extends Graphics {
     );
   }
 
+  public isCollidingWithCharacter(character: Character): boolean {
+    const bulletBounds = this.getBounds().rectangle;
+    const characterBounds = character.getHitbox();
+
+    return bulletBounds.x < characterBounds.x + characterBounds.width &&
+      bulletBounds.x + bulletBounds.width > characterBounds.x &&
+      bulletBounds.y < characterBounds.y + characterBounds.height &&
+      bulletBounds.y + bulletBounds.height > characterBounds.y;
+  }
+
   public isColliding(obstacles: Graphics[]): boolean {
-    const bulletBounds = this.getBounds();
+    const bulletBounds = this.getBounds().rectangle;
     for (const obstacle of obstacles) {
-      const obstacleBounds = obstacle.getBounds();
+      const obstacleBounds = obstacle.getBounds().rectangle;
       if (bulletBounds.x < obstacleBounds.x + obstacleBounds.width &&
         bulletBounds.x + bulletBounds.width > obstacleBounds.x &&
         bulletBounds.y < obstacleBounds.y + obstacleBounds.height &&

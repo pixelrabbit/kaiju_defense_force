@@ -31,7 +31,7 @@ export class GameStage extends Container {
     const texture = await Assets.load('https://pixijs.com/assets/bunny.png');
     this.player = new Player(texture);
 
-    // Setup player properties
+    // PLAYER
     this.player.x = this.screenWidth / 2;
     this.player.y = this.screenHeight / 2;
     this.addChild(this.player);
@@ -44,7 +44,7 @@ export class GameStage extends Container {
     ];
     this.createObstacles(obstacleData);
 
-    // Add 3 enemies at random positions, avoiding obstacles
+    // ENEMIES
     for (let i = 0; i < 3; i++) {
       const enemy = new Enemy(texture, this.player);
 
@@ -52,13 +52,14 @@ export class GameStage extends Container {
       do {
         enemy.x = Math.random() * this.screenWidth;
         enemy.y = Math.random() * this.screenHeight;
-      } while (enemy.isColliding(this.obstacles));
+      } while (enemy.isCollidingWithObstacles(this.obstacles));
 
       this.enemies.push(enemy);
       this.addChild(enemy);
     }
   }
 
+  // OBSTACLES
   private obstacles: Graphics[] = [];
   private createObstacles(obstacleData: ObstacleData[]): void {
     obstacleData.forEach((data: ObstacleData) => {
@@ -76,10 +77,65 @@ export class GameStage extends Container {
 
 
 
+  private handleCollisions(dt: number): void {
+    if (!this.player) return;
+
+    // bullets vs enemy
+    for (let i = this.player.bullets.length - 1; i >= 0; i--) {
+      const bullet = this.player.bullets[i];
+      bullet.update(dt);
+
+      let hitEnemy = false;
+      for (let j = this.enemies.length - 1; j >= 0; j--) {
+        const enemy = this.enemies[j];
+        if (bullet.isCollidingWithCharacter(enemy)) {
+          hitEnemy = true;
+          enemy.takeDamage(1);
+          if (enemy.isDead()) {
+            this.removeChild(enemy);
+            this.enemies.splice(j, 1);
+          }
+          break; // Bullet hits one enemy
+        }
+      }
+
+      if (hitEnemy || bullet.isOutOfBounds(this.screenWidth, this.screenHeight) || bullet.isColliding(this.obstacles)) {
+        this.removeChild(bullet);
+        this.player.bullets.splice(i, 1);
+      }
+    }
+
+    // bullets vs player
+    for (const enemy of this.enemies) {
+      for (let i = enemy.bullets.length - 1; i >= 0; i--) {
+        const bullet = enemy.bullets[i];
+        bullet.update(dt);
+
+        let hitPlayer = false;
+        if (this.player && !this.player.isDead() && bullet.isCollidingWithCharacter(this.player)) {
+          hitPlayer = true;
+          this.player.takeDamage(1);
+          if (this.player.isDead()) {
+            this.removeChild(this.player);
+            this.player = null!;
+            // TODO: game over
+          }
+        }
+
+        if (hitPlayer || bullet.isOutOfBounds(this.screenWidth, this.screenHeight) || bullet.isColliding(this.obstacles)) {
+          this.removeChild(bullet);
+          enemy.bullets.splice(i, 1);
+        }
+      }
+    }
+  }
+
   public update(ticker: Ticker): void {
-    this.player?.update(ticker, this.screenWidth, this.screenHeight, this.obstacles);
+    this.player?.update(ticker, this.screenWidth, this.screenHeight, this.obstacles, this.enemies); // The '?' handles if player is null
     this.enemies.forEach(enemy => {
       enemy.update(ticker, this.screenWidth, this.screenHeight, this.obstacles);
     });
+
+    this.handleCollisions(ticker.deltaTime);
   }
 }

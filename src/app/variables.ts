@@ -1,8 +1,5 @@
-export const bullet = {
-  color: 0x00ff00
-}
-
-export const player = {
-  hitbox: 0x00ff00,
-  reticle: 0x00ff00
+export const colors = {
+  green: 0x00ff00,
+  red: 0xff0000,
+  blue: 0x0000ff,
 }
