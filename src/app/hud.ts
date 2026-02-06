@@ -1,5 +1,5 @@
-import { Container, Graphics, Text, TextStyle } from 'pixi.js';
-import type { Player } from './player';
+import { Container, Graphics, Text, TextStyle } from "pixi.js";
+import type { Player } from "./player";
 
 export class Minimap extends Container {
   private cameraRect: Graphics;
@@ -94,11 +94,11 @@ export class HUD extends Container {
 
     // Add "bunny" text
     const style = new TextStyle({
-      fill: '#ffffff',
+      fill: "#ffffff",
       fontSize: 18,
-      fontWeight: 'bold',
+      fontWeight: "bold",
     });
-    const name = new Text({ text: 'wabbit', style });
+    const name = new Text({ text: "wabbit", style });
     name.x = 0;
     name.y = 0;
     name.origin.set(0);

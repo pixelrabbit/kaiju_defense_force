@@ -1,8 +1,8 @@
-import { Graphics, Texture, Ticker, PointData } from 'pixi.js';
-import { Bullet } from './bullet';
-import { colors } from './variables';
-import { Enemy } from './enemy';
-import { Character } from './character';
+import { Graphics, Texture, Ticker, PointData } from "pixi.js";
+import { Bullet } from "./bullet";
+import { colors } from "./variables";
+import { Enemy } from "./enemy";
+import { Character } from "./character";
 
 export class Player extends Character {
   private keys: Record<string, boolean> = {};
@@ -19,12 +19,12 @@ export class Player extends Character {
     this.addChild(this.reticle);
 
     // Event listeners
-    window.addEventListener('keydown', (e) => { this.keys[e.code] = true; });
-    window.addEventListener('keyup', (e) => { this.keys[e.code] = false; });
-    window.addEventListener('mousedown', (e) => {
+    window.addEventListener("keydown", (e) => { this.keys[e.code] = true; });
+    window.addEventListener("keyup", (e) => { this.keys[e.code] = false; });
+    window.addEventListener("mousedown", (e) => {
       if (e.button === 0) this.isFiring = true;
     });
-    window.addEventListener('mouseup', (e) => {
+    window.addEventListener("mouseup", (e) => {
       if (e.button === 0) this.isFiring = false;
     });
   }
@@ -76,15 +76,15 @@ export class Player extends Character {
     const oldY = this.y;
 
     // Movement
-    if (this.keys['ArrowLeft'] || this.keys['KeyA']) this.x -= this.speed * dt;
-    if (this.keys['ArrowRight'] || this.keys['KeyD']) this.x += this.speed * dt;
+    if (this.keys["ArrowLeft"] || this.keys["KeyA"]) this.x -= this.speed * dt;
+    if (this.keys["ArrowRight"] || this.keys["KeyD"]) this.x += this.speed * dt;
 
     if (this.isCollidingWithObstacles(obstacles) || this.isCollidingWithEnemies(enemies)) {
       this.x = oldX;
     }
 
-    if (this.keys['ArrowUp'] || this.keys['KeyW']) this.y -= this.speed * dt;
-    if (this.keys['ArrowDown'] || this.keys['KeyS']) this.y += this.speed * dt;
+    if (this.keys["ArrowUp"] || this.keys["KeyW"]) this.y -= this.speed * dt;
+    if (this.keys["ArrowDown"] || this.keys["KeyS"]) this.y += this.speed * dt;
 
     if (this.isCollidingWithObstacles(obstacles) || this.isCollidingWithEnemies(enemies)) {
       this.y = oldY;

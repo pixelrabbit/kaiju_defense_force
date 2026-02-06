@@ -1,7 +1,7 @@
-import { Assets, Container, Ticker, Graphics, FederatedPointerEvent, Rectangle, TilingSprite } from 'pixi.js';
-import { Player } from './player';
-import { HUD, Minimap } from './hud';
-import { Enemy } from './enemy';
+import { Assets, Container, Ticker, Graphics, FederatedPointerEvent, Rectangle, TilingSprite } from "pixi.js";
+import { Player } from "./player";
+import { HUD, Minimap } from "./hud";
+import { Enemy } from "./enemy";
 
 interface ObstacleData {
   x: number;
@@ -13,6 +13,7 @@ interface ObstacleData {
 export class GameStage extends Container {
   private player!: Player;  //TODO: understand exclamation point
   private enemies: Enemy[] = [];
+  private readonly enemiesNumber = 0;
   private hud: HUD;
   private minimap: Minimap;
   private readonly screenWidth: number;
@@ -20,6 +21,7 @@ export class GameStage extends Container {
   private readonly worldWidth = 2400;
   private readonly worldHeight = 1600;
   private world: Container;
+
 
   constructor(screenWidth: number, screenHeight: number) {
     super();
@@ -37,9 +39,9 @@ export class GameStage extends Container {
     this.addChild(this.minimap);
 
     // Make stage interactive to capture mouse events across the whole screen
-    this.eventMode = 'static';
+    this.eventMode = "static";
     this.hitArea = new Rectangle(0, 0, screenWidth, screenHeight);
-    this.on('pointermove', this.onPointerMove, this);
+    this.on("pointermove", this.onPointerMove, this);
   }
 
   private onPointerMove(event: FederatedPointerEvent): void {
@@ -52,7 +54,7 @@ export class GameStage extends Container {
 
   public async setup(): Promise<void> {
     // Add repeating grass background
-    const grassTexture = await Assets.load('assets/grass.jpg');
+    const grassTexture = await Assets.load("assets/grass.jpg");
     const background = new TilingSprite({
       texture: grassTexture,
       width: this.worldWidth,
@@ -74,7 +76,7 @@ export class GameStage extends Container {
     // this.world.addChild(grid);
 
     // Load the bunny player
-    const texture = await Assets.load('https://pixijs.com/assets/bunny.png');
+    const texture = await Assets.load("https://pixijs.com/assets/bunny.png");
     this.player = new Player(texture);
 
     // PLAYER
@@ -93,8 +95,7 @@ export class GameStage extends Container {
     this.minimap.setObstacles(this.obstacles);
 
     // ENEMIES
-    const numEnemies = 1;
-    for (let i = 0; i < numEnemies; i++) {
+    for (let i = 0; i < this.enemiesNumber; i++) {
       const enemy = new Enemy(texture, this.player);
 
       // Find a valid spawn position

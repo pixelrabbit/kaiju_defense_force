@@ -1,5 +1,14 @@
+## Concept
+
+Herzog Zwei but with a mech and your enemy is a monster horde with a kaiju or two
+
 ## ToDo
 
-- when enemies are killed, their bullets stay on the screen
 - separate bullets from characters
-- update player health on bullet collision
+- build bases
+- build defense units
+- add transport transformation for mech
+
+## Bugs
+
+- when enemies are killed, their bullets stay on the screen

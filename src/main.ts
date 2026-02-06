@@ -1,13 +1,13 @@
-import { Application } from 'pixi.js';
-import { GameStage } from './app/stage';
+import { Application } from "pixi.js";
+import { GameStage } from "./app/stage";
 
 (async () => {
   // Create a new application
   const app = new Application();
 
   // Initialize the application
-  const containerElement = document.querySelector('#game-container') as HTMLElement;
-  await app.init({ background: '#1099bb', width: 1200, height: 800 });
+  const containerElement = document.querySelector("#game-container") as HTMLElement;
+  await app.init({ background: "#1099bb", width: 1200, height: 800 });
 
   // Append the application canvas to the document body
   containerElement.appendChild(app.canvas);

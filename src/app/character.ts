@@ -1,5 +1,5 @@
-import { Container, Graphics, Sprite, Texture, Rectangle } from 'pixi.js';
-import { Bullet } from './bullet';
+import { Container, Graphics, Sprite, Texture, Rectangle } from "pixi.js";
+import { Bullet } from "./bullet";
 
 export abstract class Character extends Container {
   protected speed: number;

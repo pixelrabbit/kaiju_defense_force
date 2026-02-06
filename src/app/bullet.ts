@@ -1,5 +1,5 @@
-import { Graphics } from 'pixi.js';
-import { Character } from './character';
+import { Graphics } from "pixi.js";
+import { Character } from "./character";
 
 export class Bullet extends Graphics {
   public velocity = { x: 0, y: 0 };
